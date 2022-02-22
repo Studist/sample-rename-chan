@@ -1,7 +1,7 @@
 # sample-rename-chan
 Slackのチャンネル名をAdmin権限なくてもリネーム出来るSlackアプリをMicrosoft Power Automateで作るサンプルです
 
-Releasesに置いてあるZipでダウンロードして、Power Automateにインポートすると使えます。
+[Releases](https://github.com/Studist/sample-rename-chan/releases)に置いてあるZipでダウンロードして、Power Automateにインポートすると使えます。
 
 詳細な使い方、作り方は以下の記事をご覧ください。
 
