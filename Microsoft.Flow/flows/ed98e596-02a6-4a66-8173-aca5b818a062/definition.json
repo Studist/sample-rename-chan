@@ -1,0 +1,830 @@
+{
+    "name": "0e22b3c6-1b61-4fb6-99d5-bb5047fb7c14",
+    "id": "/providers/Microsoft.Flow/flows/0e22b3c6-1b61-4fb6-99d5-bb5047fb7c14",
+    "type": "Microsoft.Flow/flows",
+    "properties": {
+        "apiId": "/providers/Microsoft.PowerApps/apis/shared_logicflows",
+        "displayName": "Sample - Rename Chan",
+        "definition": {
+            "metadata": {
+                "workflowEntityId": null,
+                "processAdvisorMetadata": null,
+                "flowclientsuspensionreason": "None",
+                "flowclientsuspensiontime": null,
+                "creator": {
+                    "id": "2a7ebffc-67f2-40ff-bbb3-9fa45392da05",
+                    "type": "User",
+                    "tenantId": "cbf070ab-4bf5-407d-a7b8-7b528cd03664"
+                },
+                "provisioningMethod": "FromDefinition",
+                "failureAlertSubscription": true,
+                "clientLastModifiedTime": "2022-02-20T22:28:51.2173Z"
+            },
+            "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {
+                "$connections": {
+                    "defaultValue": {},
+                    "type": "Object"
+                },
+                "$authentication": {
+                    "defaultValue": {},
+                    "type": "SecureObject"
+                }
+            },
+            "triggers": {
+                "manual": {
+                    "metadata": {
+                        "operationMetadataId": "75cedf31-e701-4b15-b1be-dae91ec98410"
+                    },
+                    "type": "Request",
+                    "kind": "Http",
+                    "inputs": {}
+                }
+            },
+            "actions": {
+                "HTTP_要求のBodyのJSON解析": {
+                    "runAfter": {},
+                    "metadata": {
+                        "operationMetadataId": "852f48b4-50bd-4766-8b73-064c5e573fa4"
+                    },
+                    "type": "ParseJson",
+                    "inputs": {
+                        "content": "@removeProperty(removeProperty(triggerBody(),'$content-type'),'$content')",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "$formdata": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "key": {
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "key",
+                                            "value"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "formdata_から_channel_id_の_value_だけ取り出し": {
+                    "runAfter": {
+                        "Bodyから_formdata:_array_変数を作成": [
+                            "Succeeded"
+                        ]
+                    },
+                    "metadata": {
+                        "operationMetadataId": "c8b7ea04-2286-4a0e-b50e-b72dc3c48d93"
+                    },
+                    "type": "ParseJson",
+                    "inputs": {
+                        "content": "@removeProperty(variables('formdata')[3],'key')",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "value": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "Bodyから_formdata:_array_変数を作成": {
+                    "runAfter": {
+                        "HTTP_要求のBodyのJSON解析": [
+                            "Succeeded"
+                        ]
+                    },
+                    "metadata": {
+                        "operationMetadataId": "d8c00c7c-4ecd-48d3-9dd9-60297b27538b"
+                    },
+                    "type": "InitializeVariable",
+                    "inputs": {
+                        "variables": [
+                            {
+                                "name": "formdata",
+                                "type": "array",
+                                "value": "@body('HTTP_要求のBodyのJSON解析')?['$formdata']"
+                            }
+                        ]
+                    }
+                },
+                "channel_id_変数を作成": {
+                    "runAfter": {
+                        "formdata_から_channel_id_の_value_だけ取り出し": [
+                            "Succeeded"
+                        ]
+                    },
+                    "metadata": {
+                        "operationMetadataId": "d7b8471e-a246-4b30-9792-5073e5360032"
+                    },
+                    "type": "InitializeVariable",
+                    "inputs": {
+                        "variables": [
+                            {
+                                "name": "channel_id",
+                                "type": "string",
+                                "value": "@body('formdata_から_channel_id_の_value_だけ取り出し')?['value']"
+                            }
+                        ]
+                    }
+                },
+                "user_id_変数を作成": {
+                    "runAfter": {
+                        "formdata_から_userid_の_value_だけ取り出し": [
+                            "Succeeded"
+                        ]
+                    },
+                    "metadata": {
+                        "operationMetadataId": "d7b8471e-a246-4b30-9792-5073e5360032"
+                    },
+                    "type": "InitializeVariable",
+                    "inputs": {
+                        "variables": [
+                            {
+                                "name": "user_id",
+                                "type": "string",
+                                "value": "@body('formdata_から_userid_の_value_だけ取り出し')?['value']"
+                            }
+                        ]
+                    }
+                },
+                "formdata_から_text_の_value_だけ取り出し": {
+                    "runAfter": {
+                        "user_id_変数を作成": [
+                            "Succeeded"
+                        ]
+                    },
+                    "metadata": {
+                        "operationMetadataId": "c8b7ea04-2286-4a0e-b50e-b72dc3c48d93"
+                    },
+                    "type": "ParseJson",
+                    "inputs": {
+                        "content": "@removeProperty(variables('formdata')[8], 'key')",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "value": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "text_変数を作成": {
+                    "runAfter": {
+                        "formdata_から_text_の_value_だけ取り出し": [
+                            "Succeeded"
+                        ]
+                    },
+                    "metadata": {
+                        "operationMetadataId": "d7b8471e-a246-4b30-9792-5073e5360032"
+                    },
+                    "type": "InitializeVariable",
+                    "inputs": {
+                        "variables": [
+                            {
+                                "name": "text",
+                                "type": "string",
+                                "value": "@body('formdata_から_text_の_value_だけ取り出し')?['value']"
+                            }
+                        ]
+                    }
+                },
+                "conversations.rename": {
+                    "runAfter": {
+                        "text_変数を作成": [
+                            "Succeeded"
+                        ]
+                    },
+                    "metadata": {
+                        "operationMetadataId": "abd648cb-9474-43e3-9e38-c144f83f7ab1"
+                    },
+                    "type": "Http",
+                    "inputs": {
+                        "method": "POST",
+                        "uri": "https://slack.com/api/conversations.rename?channel=@{variables('channel_id')}&name=@{variables('text')}&pretty=1",
+                        "headers": {
+                            "Authorization": "Bearer xoxp-"
+                        }
+                    }
+                },
+                "formdata_から_userid_の_value_だけ取り出し": {
+                    "runAfter": {
+                        "channel_id_変数を作成": [
+                            "Succeeded"
+                        ]
+                    },
+                    "metadata": {
+                        "operationMetadataId": "c8b7ea04-2286-4a0e-b50e-b72dc3c48d93"
+                    },
+                    "type": "ParseJson",
+                    "inputs": {
+                        "content": "@removeProperty(variables('formdata')[5], 'key')",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "value": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "エラーの有無": {
+                    "actions": {
+                        "変更完了通知": {
+                            "runAfter": {},
+                            "metadata": {
+                                "operationMetadataId": "64d50863-baf0-4896-8d2a-6ea7e49d1f1c"
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_slack",
+                                    "connectionName": "shared_slack",
+                                    "operationId": "PostMessage_V2"
+                                },
+                                "parameters": {
+                                    "message/channel": "@variables('channel_id')",
+                                    "message/text": "@{concat('<@', variables('user_id'), '>')} さんがチャンネル名を `@{variables('text')}` に変更しました",
+                                    "message/username": "リネームちゃん",
+                                    "message/as_user": false,
+                                    "message/parse": "none"
+                                },
+                                "authentication": "@parameters('$authentication')"
+                            }
+                        },
+                        "オープンチャンネルかどうか": {
+                            "actions": {
+                                "正常終了": {
+                                    "runAfter": {},
+                                    "metadata": {
+                                        "operationMetadataId": "2156de44-5fd9-4956-b8c5-14c9ae79ebe7"
+                                    },
+                                    "type": "Terminate",
+                                    "inputs": {
+                                        "runStatus": "Succeeded"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "変更完了通知": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "else": {
+                                "actions": {
+                                    "conversations.leave": {
+                                        "runAfter": {},
+                                        "metadata": {
+                                            "operationMetadataId": "14c08cd2-88b4-478b-85b2-bf892f2d33c5"
+                                        },
+                                        "type": "Http",
+                                        "inputs": {
+                                            "method": "POST",
+                                            "uri": "https://slack.com/api/conversations.leave?channel=@{variables('channel_id')}&pretty=1",
+                                            "headers": {
+                                                "Authorization": "Bearer xoxp-"
+                                            }
+                                        }
+                                    },
+                                    "チャンネルを抜けて正常終了": {
+                                        "runAfter": {
+                                            "conversations.leave": [
+                                                "Succeeded"
+                                            ]
+                                        },
+                                        "metadata": {
+                                            "operationMetadataId": "a22f94d2-0277-4669-b44e-fa5baffb6c47"
+                                        },
+                                        "type": "Terminate",
+                                        "inputs": {
+                                            "runStatus": "Succeeded"
+                                        }
+                                    }
+                                }
+                            },
+                            "expression": {
+                                "equals": [
+                                    "@variables('is_channel')",
+                                    true
+                                ]
+                            },
+                            "metadata": {
+                                "operationMetadataId": "6aa5044c-defd-44df-9304-9cd1be5700f8"
+                            },
+                            "type": "If"
+                        }
+                    },
+                    "runAfter": {
+                        "error:_string_変数を作成": [
+                            "Succeeded"
+                        ]
+                    },
+                    "else": {
+                        "actions": {
+                            "channel_not_found": {
+                                "actions": {
+                                    "コマンド実行者にエラーメッセージを送信_channel_not_found": {
+                                        "runAfter": {},
+                                        "metadata": {
+                                            "operationMetadataId": "64d50863-baf0-4896-8d2a-6ea7e49d1f1c"
+                                        },
+                                        "type": "OpenApiConnection",
+                                        "inputs": {
+                                            "host": {
+                                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_slack",
+                                                "connectionName": "shared_slack",
+                                                "operationId": "PostMessage_V2"
+                                            },
+                                            "parameters": {
+                                                "message/channel": "@variables('user_id')",
+                                                "message/text": "error: `@{variables('error')}`\n\nDMやマルチDMで本コマンドを実行することはできません。\n\nまた、プライベートチャンネルをリネームするには ○○ユーザ をチャンネルに招待してから実行してください。",
+                                                "message/username": "リネームちゃん",
+                                                "message/as_user": false,
+                                                "message/parse": "none",
+                                                "message/unfurl_links": true,
+                                                "message/unfurl_media": true
+                                            },
+                                            "authentication": "@parameters('$authentication')"
+                                        }
+                                    },
+                                    "エラー（Bot招待もれ_or_DM）": {
+                                        "runAfter": {
+                                            "コマンド実行者にエラーメッセージを送信_channel_not_found": [
+                                                "Succeeded"
+                                            ]
+                                        },
+                                        "metadata": {
+                                            "operationMetadataId": "21deb6db-4b37-4bac-811f-d725b8f91a04"
+                                        },
+                                        "type": "Terminate",
+                                        "inputs": {
+                                            "runStatus": "Failed",
+                                            "runError": {
+                                                "code": "@variables('error')",
+                                                "message": "@variables('error')"
+                                            }
+                                        }
+                                    }
+                                },
+                                "runAfter": {},
+                                "else": {
+                                    "actions": {
+                                        "name_taken": {
+                                            "actions": {
+                                                "コマンド実行者にエラーメッセージを送信_2": {
+                                                    "runAfter": {},
+                                                    "metadata": {
+                                                        "operationMetadataId": "64d50863-baf0-4896-8d2a-6ea7e49d1f1c"
+                                                    },
+                                                    "type": "OpenApiConnection",
+                                                    "inputs": {
+                                                        "host": {
+                                                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_slack",
+                                                            "connectionName": "shared_slack",
+                                                            "operationId": "PostMessage_V2"
+                                                        },
+                                                        "parameters": {
+                                                            "message/channel": "@variables('user_id')",
+                                                            "message/text": "error: `@{variables('error')}`\n\n`@{variables('text')}` はすでに存在するチャンネル名です。\n\n他のチャンネル名を指定して実行してください。\n",
+                                                            "message/username": "リネームちゃん",
+                                                            "message/as_user": false,
+                                                            "message/parse": "none"
+                                                        },
+                                                        "authentication": "@parameters('$authentication')"
+                                                    }
+                                                },
+                                                "エラー（既存のチャンネル名）": {
+                                                    "runAfter": {
+                                                        "コマンド実行者にエラーメッセージを送信_2": [
+                                                            "Succeeded"
+                                                        ]
+                                                    },
+                                                    "metadata": {
+                                                        "operationMetadataId": "8816ae70-8261-4c3c-8470-32186fd4d3f2"
+                                                    },
+                                                    "type": "Terminate",
+                                                    "inputs": {
+                                                        "runStatus": "Failed",
+                                                        "runError": {
+                                                            "code": "@variables('error')",
+                                                            "message": "@variables('error')"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "runAfter": {},
+                                            "else": {
+                                                "actions": {
+                                                    "invalid_name_specials": {
+                                                        "actions": {
+                                                            "コマンド実行者にエラーメッセージを送信_3": {
+                                                                "runAfter": {},
+                                                                "metadata": {
+                                                                    "operationMetadataId": "64d50863-baf0-4896-8d2a-6ea7e49d1f1c"
+                                                                },
+                                                                "type": "OpenApiConnection",
+                                                                "inputs": {
+                                                                    "host": {
+                                                                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_slack",
+                                                                        "connectionName": "shared_slack",
+                                                                        "operationId": "PostMessage_V2"
+                                                                    },
+                                                                    "parameters": {
+                                                                        "message/channel": "@variables('user_id')",
+                                                                        "message/text": "error: `@{variables('error')}`\n\nチャンネル名に利用できない記号やスペースが入っています。\n\n正しいチャンネル名を指定して実行してください。",
+                                                                        "message/username": "リネームちゃん",
+                                                                        "message/as_user": false,
+                                                                        "message/parse": "none"
+                                                                    },
+                                                                    "authentication": "@parameters('$authentication')"
+                                                                }
+                                                            },
+                                                            "エラー（チャンネル名に使用出来ない文字列）": {
+                                                                "runAfter": {
+                                                                    "コマンド実行者にエラーメッセージを送信_3": [
+                                                                        "Succeeded"
+                                                                    ]
+                                                                },
+                                                                "metadata": {
+                                                                    "operationMetadataId": "4120d61a-58a6-4845-83bd-7a535ad1de52"
+                                                                },
+                                                                "type": "Terminate",
+                                                                "inputs": {
+                                                                    "runStatus": "Failed",
+                                                                    "runError": {
+                                                                        "code": "@variables('error')",
+                                                                        "message": "@variables('error')"
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "runAfter": {},
+                                                        "else": {
+                                                            "actions": {
+                                                                "条件": {
+                                                                    "actions": {
+                                                                        "コマンド実行者にエラーメッセージを送信": {
+                                                                            "runAfter": {},
+                                                                            "metadata": {
+                                                                                "operationMetadataId": "64d50863-baf0-4896-8d2a-6ea7e49d1f1c"
+                                                                            },
+                                                                            "type": "OpenApiConnection",
+                                                                            "inputs": {
+                                                                                "host": {
+                                                                                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_slack",
+                                                                                    "connectionName": "shared_slack",
+                                                                                    "operationId": "PostMessage_V2"
+                                                                                },
+                                                                                "parameters": {
+                                                                                    "message/channel": "@variables('user_id')",
+                                                                                    "message/text": "error: `@{variables('error')}`\n\nコマンドに引数がありませんでした。\n正しいチャンネル名を指定して実行してください。\n",
+                                                                                    "message/username": "リネームちゃん",
+                                                                                    "message/as_user": false,
+                                                                                    "message/parse": "none"
+                                                                                },
+                                                                                "authentication": "@parameters('$authentication')"
+                                                                            }
+                                                                        },
+                                                                        "エラー（引数なし）": {
+                                                                            "runAfter": {
+                                                                                "コマンド実行者にエラーメッセージを送信": [
+                                                                                    "Succeeded"
+                                                                                ]
+                                                                            },
+                                                                            "metadata": {
+                                                                                "operationMetadataId": "480fb9cf-e55a-4ab3-8e78-ed033c5380a3"
+                                                                            },
+                                                                            "type": "Terminate",
+                                                                            "inputs": {
+                                                                                "runStatus": "Failed",
+                                                                                "runError": {
+                                                                                    "code": "@variables('error')",
+                                                                                    "message": "@variables('error')"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    "runAfter": {},
+                                                                    "else": {
+                                                                        "actions": {
+                                                                            "コマンド実行者にエラーメッセージを送信_4": {
+                                                                                "runAfter": {},
+                                                                                "metadata": {
+                                                                                    "operationMetadataId": "64d50863-baf0-4896-8d2a-6ea7e49d1f1c"
+                                                                                },
+                                                                                "type": "OpenApiConnection",
+                                                                                "inputs": {
+                                                                                    "host": {
+                                                                                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_slack",
+                                                                                        "connectionName": "shared_slack",
+                                                                                        "operationId": "PostMessage_V2"
+                                                                                    },
+                                                                                    "parameters": {
+                                                                                        "message/channel": "@variables('user_id')",
+                                                                                        "message/text": "error: `@{variables('error')}`\n\n想定外のエラーが発生しました。\n\nこのメッセージのスクリーンショットを添えてお問い合わせください。",
+                                                                                        "message/username": "リネームちゃん",
+                                                                                        "message/as_user": false,
+                                                                                        "message/parse": "none"
+                                                                                    },
+                                                                                    "authentication": "@parameters('$authentication')"
+                                                                                }
+                                                                            },
+                                                                            "不明なエラー": {
+                                                                                "runAfter": {
+                                                                                    "コマンド実行者にエラーメッセージを送信_4": [
+                                                                                        "Succeeded"
+                                                                                    ]
+                                                                                },
+                                                                                "metadata": {
+                                                                                    "operationMetadataId": "cff6b36f-cbb1-4f5a-bfb3-743ea2a0b90b"
+                                                                                },
+                                                                                "type": "Terminate",
+                                                                                "inputs": {
+                                                                                    "runStatus": "Failed",
+                                                                                    "runError": {
+                                                                                        "code": "@variables('error')",
+                                                                                        "message": "@variables('error')"
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    "expression": {
+                                                                        "equals": [
+                                                                            "@variables('error')",
+                                                                            "invalid_name_required"
+                                                                        ]
+                                                                    },
+                                                                    "metadata": {
+                                                                        "operationMetadataId": "07951e72-438b-4b6f-a62f-4b75feb40ec0"
+                                                                    },
+                                                                    "type": "If"
+                                                                }
+                                                            }
+                                                        },
+                                                        "expression": {
+                                                            "equals": [
+                                                                "@variables('error')",
+                                                                "invalid_name_specials"
+                                                            ]
+                                                        },
+                                                        "metadata": {
+                                                            "operationMetadataId": "9eaf0290-c119-46a4-9efe-18bfe7c36c17"
+                                                        },
+                                                        "type": "If"
+                                                    }
+                                                }
+                                            },
+                                            "expression": {
+                                                "equals": [
+                                                    "@variables('error')",
+                                                    "name_taken"
+                                                ]
+                                            },
+                                            "metadata": {
+                                                "operationMetadataId": "eca26404-fa62-4c68-b42e-d99ad590c423"
+                                            },
+                                            "type": "If"
+                                        }
+                                    }
+                                },
+                                "expression": {
+                                    "equals": [
+                                        "@variables('error')",
+                                        "channel_not_found"
+                                    ]
+                                },
+                                "metadata": {
+                                    "operationMetadataId": "d31d077c-a843-46d5-9b7b-9f5a870db929"
+                                },
+                                "type": "If"
+                            }
+                        }
+                    },
+                    "expression": {
+                        "equals": [
+                            "@variables('ok')",
+                            true
+                        ]
+                    },
+                    "metadata": {
+                        "operationMetadataId": "accedc95-c45c-435a-9b47-c7af8abd9a0f"
+                    },
+                    "type": "If"
+                },
+                "conversations.renameの実行結果をパース": {
+                    "runAfter": {
+                        "conversations.rename": [
+                            "Succeeded"
+                        ]
+                    },
+                    "metadata": {
+                        "operationMetadataId": "e4f2c541-b31f-4ea2-bd3b-b2a57fe1b212"
+                    },
+                    "type": "ParseJson",
+                    "inputs": {
+                        "content": "@body('conversations.rename')",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean"
+                                },
+                                "channel": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "is_channel": {
+                                            "type": "boolean"
+                                        },
+                                        "is_group": {
+                                            "type": "boolean"
+                                        },
+                                        "is_im": {
+                                            "type": "boolean"
+                                        },
+                                        "is_mpim": {
+                                            "type": "boolean"
+                                        },
+                                        "is_private": {
+                                            "type": "boolean"
+                                        },
+                                        "created": {
+                                            "type": "integer"
+                                        },
+                                        "is_archived": {
+                                            "type": "boolean"
+                                        },
+                                        "is_general": {
+                                            "type": "boolean"
+                                        },
+                                        "unlinked": {
+                                            "type": "integer"
+                                        },
+                                        "name_normalized": {
+                                            "type": "string"
+                                        },
+                                        "is_shared": {
+                                            "type": "boolean"
+                                        },
+                                        "is_org_shared": {
+                                            "type": "boolean"
+                                        },
+                                        "is_pending_ext_shared": {
+                                            "type": "boolean"
+                                        },
+                                        "pending_shared": {
+                                            "type": "array"
+                                        },
+                                        "parent_conversation": {},
+                                        "creator": {
+                                            "type": "string"
+                                        },
+                                        "is_ext_shared": {
+                                            "type": "boolean"
+                                        },
+                                        "shared_team_ids": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "pending_connected_team_ids": {
+                                            "type": "array"
+                                        },
+                                        "is_member": {
+                                            "type": "boolean"
+                                        },
+                                        "topic": {
+                                            "type": "object",
+                                            "properties": {
+                                                "value": {
+                                                    "type": "string"
+                                                },
+                                                "creator": {
+                                                    "type": "string"
+                                                },
+                                                "last_set": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        },
+                                        "purpose": {
+                                            "type": "object",
+                                            "properties": {
+                                                "value": {
+                                                    "type": "string"
+                                                },
+                                                "creator": {
+                                                    "type": "string"
+                                                },
+                                                "last_set": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        },
+                                        "previous_names": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "ok:_boolean_変数を作成": {
+                    "runAfter": {
+                        "conversations.renameの実行結果をパース": [
+                            "Succeeded"
+                        ]
+                    },
+                    "metadata": {
+                        "operationMetadataId": "f0e62402-2d2c-4adb-8994-17865c8e33df"
+                    },
+                    "type": "InitializeVariable",
+                    "inputs": {
+                        "variables": [
+                            {
+                                "name": "ok",
+                                "type": "boolean",
+                                "value": "@body('conversations.renameの実行結果をパース')?['ok']"
+                            }
+                        ]
+                    }
+                },
+                "is_channel:_boolean_変数を作成": {
+                    "runAfter": {
+                        "ok:_boolean_変数を作成": [
+                            "Succeeded"
+                        ]
+                    },
+                    "metadata": {
+                        "operationMetadataId": "96e2da10-7ed3-4945-bc63-943350f0cd8c"
+                    },
+                    "type": "InitializeVariable",
+                    "inputs": {
+                        "variables": [
+                            {
+                                "name": "is_channel",
+                                "type": "boolean",
+                                "value": "@body('conversations.renameの実行結果をパース')?['channel']?['is_channel']"
+                            }
+                        ]
+                    }
+                },
+                "error:_string_変数を作成": {
+                    "runAfter": {
+                        "is_channel:_boolean_変数を作成": [
+                            "Succeeded"
+                        ]
+                    },
+                    "metadata": {
+                        "operationMetadataId": "1d6a6385-ab0c-4aa5-9e02-de37c5c1fb00"
+                    },
+                    "type": "InitializeVariable",
+                    "inputs": {
+                        "variables": [
+                            {
+                                "name": "error",
+                                "type": "string",
+                                "value": "@body('conversations.renameの実行結果をパース')?['error']"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "connectionReferences": {
+            "shared_slack": {
+                "connectionName": "shared-slack-6c723b1d-a522-43ec-a5f8-a683-5f1397df",
+                "source": "Embedded",
+                "id": "/providers/Microsoft.PowerApps/apis/shared_slack",
+                "tier": "NotSpecified"
+            }
+        },
+        "flowFailureAlertSubscribed": false
+    }
+}

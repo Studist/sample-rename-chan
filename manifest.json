@@ -1,0 +1,54 @@
+{
+    "schema": "1.0",
+    "details": {
+        "displayName": "Sample - Rename Chan",
+        "description": "Slackのチャンネル名をAdmin権限がなくてもリネームするフローです\nhttps://studist.tech/how-to-make-slash-command-by-powerautomate-7b6644144c84",
+        "createdTime": "2022-02-20T22:30:47.6563415Z",
+        "packageTelemetryId": "6c197aa4-6dbf-4b2b-8ac9-6d63f570a3b4",
+        "creator": "N/A",
+        "sourceEnvironment": ""
+    },
+    "resources": {
+        "ed98e596-02a6-4a66-8173-aca5b818a062": {
+            "type": "Microsoft.Flow/flows",
+            "suggestedCreationType": "New",
+            "creationType": "Existing, New, Update",
+            "details": {
+                "displayName": "Sample - Rename Chan"
+            },
+            "configurableBy": "User",
+            "hierarchy": "Root",
+            "dependsOn": [
+                "f470bb7c-fd47-4c00-b306-5b74b1d649ce",
+                "dd6e4009-de94-40ad-89d8-2ccb232d1af6"
+            ]
+        },
+        "f470bb7c-fd47-4c00-b306-5b74b1d649ce": {
+            "id": "/providers/Microsoft.PowerApps/apis/shared_slack",
+            "name": "shared_slack",
+            "type": "Microsoft.PowerApps/apis",
+            "suggestedCreationType": "Existing",
+            "details": {
+                "displayName": "Slack",
+                "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1480/1.0.1480.2454/slack/icon.png"
+            },
+            "configurableBy": "System",
+            "hierarchy": "Child",
+            "dependsOn": []
+        },
+        "dd6e4009-de94-40ad-89d8-2ccb232d1af6": {
+            "type": "Microsoft.PowerApps/apis/connections",
+            "suggestedCreationType": "Existing",
+            "creationType": "Existing",
+            "details": {
+                "displayName": "integrator",
+                "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1480/1.0.1480.2454/slack/icon.png"
+            },
+            "configurableBy": "User",
+            "hierarchy": "Child",
+            "dependsOn": [
+                "f470bb7c-fd47-4c00-b306-5b74b1d649ce"
+            ]
+        }
+    }
+}
