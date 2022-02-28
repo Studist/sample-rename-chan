@@ -1,15 +1,15 @@
 {
     "schema": "1.0",
     "details": {
-        "displayName": "Sample - Rename Chan",
-        "description": "Slackのチャンネル名をAdmin権限がなくてもリネームするフローです\nhttps://studist.tech/how-to-make-slash-command-by-powerautomate-7b6644144c84",
-        "createdTime": "2022-02-20T22:30:47.6563415Z",
-        "packageTelemetryId": "6c197aa4-6dbf-4b2b-8ac9-6d63f570a3b4",
+        "displayName": "1.1.0",
+        "description": "",
+        "createdTime": "2022-02-28T10:46:54.1075637Z",
+        "packageTelemetryId": "607e22c3-1312-4b7a-acee-7bba0deab38f",
         "creator": "N/A",
         "sourceEnvironment": ""
     },
     "resources": {
-        "ed98e596-02a6-4a66-8173-aca5b818a062": {
+        "d8b675ba-1981-419f-ad4f-b69d665835de": {
             "type": "Microsoft.Flow/flows",
             "suggestedCreationType": "New",
             "creationType": "Existing, New, Update",
